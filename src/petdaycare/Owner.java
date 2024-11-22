@@ -24,26 +24,26 @@ public class Owner {
     public Owner() {
 
     }
-    public void register_owner(){
+    public int register_owner(){
         String url = "jdbc:mysql://localhost:3310/db_app_services";
         String username = "root";
-        String password = "";
+        String password = "ethan";
         try { // jdbc:mysql://localhost:3310/db_app_services?useTimezone=true&serverTimezone=UTC&user=root
             Connection conn;
             conn = DriverManager.getConnection(url, username, password);
             System.out.println("Connection Succesful");
             
-            Statement statement = conn.createStatement();
+            /*Statement statement = conn.createStatement();
             ResultSet resultSet =statement.executeQuery("SELECT * FROM Owner");
 
             while (resultSet.next()){
                 System.out.println(resultSet.getString("First_Name"));
                 System.out.println(resultSet.getString("Last_Name"));
-            }
+            } */
             //save the new asset, only 6 ? because id auto inrements
-            /*PreparedStatement pstmt = conn.prepareStatement(
-            "INSERT INTO Owner (Owner_FirstName, Owner_LastName, Contact_Info, City, Street, Postal_Code) " +
-            "VALUES (?, ?, ?, ?, ?, ?)");
+            PreparedStatement pstmt = conn.prepareStatement(
+            "INSERT INTO Owner (First_Name, Last_Name, Contact_Info, City, Street, Postal_Code) " +
+            "VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             pstmt.setString(1, Owner_FirstName);
             pstmt.setString(2, Owner_LastName);
@@ -62,9 +62,10 @@ public class Owner {
                 Owner_ID = generatedKeys.getInt(1);
                 System.out.println("Generated Owner_ID: " + Owner_ID);
             }
-            return 1; */
+            return 1; 
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return 0;
         }
         
     }
@@ -90,8 +91,7 @@ public class Owner {
 			 * 1. Ask user for the data about the student
 			 * 2. Create the new record
 			 */
-            register_owner();
-            /* 
+             
 			System.out.println("Creating new record of a Student");
             System.out.println("Enter First Name: ");
             Owner_FirstName = sc.nextLine();
@@ -113,7 +113,7 @@ public class Owner {
             Postal_Code = sc.nextInt();
             sc.nextLine();
 
-			register_owner(); */
+			register_owner(); 
 		}  
        /* else if (selection == 2) {
 			/* Mechanics for Retrieving Student Record 
