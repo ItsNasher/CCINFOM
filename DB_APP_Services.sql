@@ -1,5 +1,5 @@
 CREATE TABLE Product (
-Product_ID INT PRIMARY KEY,
+	Product_ID INT PRIMARY KEY,
     Product_Name VARCHAR(100) NOT NULL,
     Price DECIMAL(10,2) NOT NULL,
     Description TEXT
@@ -56,9 +56,7 @@ CREATE TABLE Owner (
     First_Name VARCHAR(20) NOT NULL,
     Last_Name VARCHAR(20) NOT NULL,
     Contact_Info VARCHAR(15) NOT NULL, 
-    City VARCHAR(30) ,
-    Street VARCHAR(30) NOT NULL,
-    Postal_Code INT NOT NULL
+    City VARCHAR(30) NOT NULL
 ) AUTO_INCREMENT = 1000;
 
 CREATE TABLE Pet (
@@ -90,13 +88,13 @@ VALUES
     (1003, 'Vaccinations', '2024-11-20', '2024-11-25', 1250.00),
     (1004, 'Boarding', '2024-11-01', '2024-11-30', 100.00);
     
-INSERT INTO Owner (Owner_ID, First_Name, Last_Name, Contact_Info, City, Street, Postal_Code)
+INSERT INTO Owner (Owner_ID, First_Name, Last_Name, Contact_Info, City)
 VALUES
-    (NULL, 'Ethan', 'Dela Cruz', '09171302924', 'Pasig', 'Manchester', 1611),
-    (NULL, 'Christopher', 'Mateo', '09324958134', 'Baguio', 'Sunset Blvd', 2600),
-    (NULL, 'Djermeyn', 'Wasan', '098313215', 'Marikina', 'Michigan Avenue', 1800),
-    (NULL, 'Bobby', 'Brown', '0991231513', 'Manila', 'Taft', 6816),
-    (NULL, 'Charlie', 'Green', '0918283131', 'Pasay', 'Market Street', 1300);
+    (NULL, 'Ethan', 'Dela Cruz', '09171302924', 'Pasig'),
+    (NULL, 'Christopher', 'Mateo', '09324958134', 'Baguio'),
+    (NULL, 'Djermeyn', 'Wasan', '098313215', 'Marikina'),
+    (NULL, 'Bobby', 'Brown', '0991231513', 'Manila'),
+    (NULL, 'Charlie', 'Green', '0918283131', 'Pasay');
     
 INSERT INTO Pet (Pet_ID, Pet_Name, Breed, Age, HealthInformation, Owner_ID)
 VALUES
@@ -169,6 +167,6 @@ SELECT * FROM sales_transaction;
 SELECT * FROM Services;
 SELECT * FROM Owner;
 SELECT * FROM Pet;
-SELECT * FROM Services_Transactions;
+SELECT * FROM Services_Transaction;
 SELECT * FROM Employees;
 SELECT * FROM Appointment_Record;
