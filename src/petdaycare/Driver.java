@@ -30,9 +30,11 @@ public class Driver {
 			} else if (selection==3) {
 				report_01 r = new report_01();
 				while (r.function() != 1) {};
+				*/
 			} else if (selection==4) {
-				System.out.println("Application is terminated");
-			} */
+				Product p = new Product();
+				while (p.function() !=5) {};
+			} 
 		}
     }
 }
