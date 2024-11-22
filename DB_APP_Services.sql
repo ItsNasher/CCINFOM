@@ -1,47 +1,47 @@
 CREATE TABLE Product (
-	Product_ID INT PRIMARY KEY,
+	Product_ID INT AUTO_INCREMENT PRIMARY KEY,
     Product_Name VARCHAR(100) NOT NULL,
     Price DECIMAL(10,2) NOT NULL,
     Description TEXT
-);
+) AUTO_INCREMENT = 1000;
 
 CREATE TABLE Inventory (
-	Inventory_ID INT PRIMARY KEY,
+	Inventory_ID INT AUTO_INCREMENT PRIMARY KEY,
     Product_ID INT NOT NULL,
     Stock_Quantity INT NOT NULL,
     Supply_Date DATE NOT NULL,
     FOREIGN KEY (Product_ID) REFERENCES Product(Product_ID)
-);
+) AUTO_INCREMENT = 1000;
 
 CREATE TABLE Sales_Transaction (
-	Transaction_ID INT PRIMARY KEY,
+	Transaction_ID INT AUTO_INCREMENT PRIMARY KEY,
     Product_ID INT NOT NULL,
     Quantity_Sold INT NOT NULL,
     Sale_Date DATE NOT NULL,
     Total_Price DECIMAL (10,2) NOT NULL,
     FOREIGN KEY (Product_ID) REFERENCES Product(Product_ID)
-);
+) AUTO_INCREMENT = 1000;
 
 INSERT INTO Product (Product_ID, Product_Name, Price, Description)
-VALUES (1, "Dog Food", 300.00, "A nutritious dog food made with real chicken, wholesome grains, and essential vitamins to support your pet’s health and vitality."),
-	   (2, "Cat Food", 200.79, "Balanced cat food with real fish and essential nutrients for a healthy coat and strong immune system."),
-	   (3, "Grooming Shampoo", 150.69, "Gentle shampoo that cleans, deodorizes, and nourishes your pet’s skin and coat."),
-       (4, "Collar & Leash", 200.29, "Durable and adjustable set for secure walks and stylish comfort."),
-       (5, "Pet Bed", 500.00, "Cozy and soft bed designed for optimal comfort and restful sleep.");
+VALUES (NULL, "Dog Food", 300.00, "A nutritious dog food made with real chicken, wholesome grains, and essential vitamins to support your pet’s health and vitality."),
+	   (NULL, "Cat Food", 200.79, "Balanced cat food with real fish and essential nutrients for a healthy coat and strong immune system."),
+	   (NULL, "Grooming Shampoo", 150.69, "Gentle shampoo that cleans, deodorizes, and nourishes your pet’s skin and coat."),
+       (NULL, "Collar & Leash", 200.29, "Durable and adjustable set for secure walks and stylish comfort."),
+       (NULL, "Pet Bed", 500.00, "Cozy and soft bed designed for optimal comfort and restful sleep.");
        
 INSERT INTO Inventory (Inventory_ID, Product_ID, Stock_Quantity, Supply_Date)
-VALUES (1, 1, 20, '2024-11-01'),
-       (2, 2, 30, '2024-11-05'),
-       (3, 3, 10, '2024-11-06'),
-       (4, 4, 20, '2024-11-06'),
-       (5, 5, 8, '2024-11-10');
+VALUES (NULL, 1000, 20, '2024-11-01'),
+       (NULL, 1001, 30, '2024-11-05'),
+       (NULL, 1002, 10, '2024-11-06'),
+       (NULL, 1003, 20, '2024-11-06'),
+       (NULL, 1004, 8, '2024-11-10');
        
 INSERT INTO Sales_Transaction (Transaction_ID, Product_ID, Quantity_Sold, Sale_Date, Total_Price)
-VALUES (1, 1, 1, '2024-11-06', 300.00), 
-       (2, 2, 1, '2024-11-06', 200.79), 
-       (3, 3, 1, '2024-11-07', 150.69), 
-       (4, 4, 1, '2024-11-08', 200.29), 
-       (5, 5, 3, '2024-11-09', 1500.00); 
+VALUES (NULL, 1000, 1, '2024-11-06', 300.00), 
+       (NULL, 1001, 1, '2024-11-06', 200.00), 
+       (NULL, 1002, 1, '2024-11-07', 150.00), 
+       (NULL, 1003, 1, '2024-11-08', 200.00), 
+       (NULL, 1004, 3, '2024-11-09', 1500.00); 
 
 CREATE TABLE Services (
 	Service_ID INT PRIMARY KEY,
