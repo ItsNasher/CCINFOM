@@ -24,9 +24,9 @@ CREATE TABLE Sales_Transaction (
 
 INSERT INTO Product (Product_ID, Product_Name, Price, Description)
 VALUES (NULL, "Dog Food", 300.00, "A nutritious dog food made with real chicken, wholesome grains, and essential vitamins to support your pet’s health and vitality."),
-	   (NULL, "Cat Food", 200.79, "Balanced cat food with real fish and essential nutrients for a healthy coat and strong immune system."),
-	   (NULL, "Grooming Shampoo", 150.69, "Gentle shampoo that cleans, deodorizes, and nourishes your pet’s skin and coat."),
-       (NULL, "Collar & Leash", 200.29, "Durable and adjustable set for secure walks and stylish comfort."),
+	   (NULL, "Cat Food", 200.00, "Balanced cat food with real fish and essential nutrients for a healthy coat and strong immune system."),
+	   (NULL, "Grooming Shampoo", 150.00, "Gentle shampoo that cleans, deodorizes, and nourishes your pet’s skin and coat."),
+       (NULL, "Collar & Leash", 200.00, "Durable and adjustable set for secure walks and stylish comfort."),
        (NULL, "Pet Bed", 500.00, "Cozy and soft bed designed for optimal comfort and restful sleep.");
        
 INSERT INTO Inventory (Inventory_ID, Product_ID, Stock_Quantity, Supply_Date)
