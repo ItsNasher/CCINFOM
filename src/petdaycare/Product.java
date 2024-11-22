@@ -13,13 +13,36 @@ public class Product {
     }
 
     public int add_product() {
-        String url = "jdbc:mysql://localhost:3310/db_app_services";
+        String url = "jdbc:mysql://localhost:3306/dp_app_services";
         String username = "root";
-        String password = "ethan";
+        String password = "pass123";
 
         try {
             Connection conn = DriverManager.getConnection(url, username, password);
             System.out.println("Connection Successful");
+
+                    // Check if a product with the same name already exists
+                PreparedStatement checkStmt = conn.prepareStatement(
+                    "SELECT COUNT(*) AS count FROM Product WHERE Product_Name = ?");
+            checkStmt.setString(1, Product_Name);
+            ResultSet rs = checkStmt.executeQuery();
+            rs.next();
+            if (rs.getInt("count") > 0) {
+                System.out.println("Error: A product with the name '" + Product_Name + "' already exists.");
+                return 0;
+            }
+
+            // Validate inputs
+            if (Product_Name == null || Product_Name.trim().isEmpty()) {
+                System.out.println("Error: Product name cannot be empty.");
+                return 0;
+            }
+            if (Price <= 0) {
+                System.out.println("Error: Price must be greater than 0.");
+                return 0;
+            }
+
+            // Insert A New Product
 
             PreparedStatement pstmt = conn.prepareStatement(
                     "INSERT INTO Product (Product_Name, Price, Description) VALUES (?, ?, ?)",
@@ -47,6 +70,102 @@ public class Product {
         }
     }
 
+    public void view_product() {
+        String url = "jdbc:mysql://localhost:3306/dp_app_services";
+        String username = "root";
+        String password = "pass123";
+
+        try {
+            Connection conn = DriverManager.getConnection(url, username, password);
+            System.out.println("Connection Successful");
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Product");
+
+            System.out.println("Product Records:");
+            System.out.println("-------------------------------------------------");
+            while (rs.next()) {
+                System.out.println("Product_ID: " + rs.getInt("Product_ID"));
+                System.out.println("Product_Name: " + rs.getString("Product_Name"));
+                System.out.println("Price: " + rs.getDouble("Price"));
+                System.out.println("Description: " + rs.getString("Description"));
+                System.out.println("-------------------------------------------------");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void update_product() {
+        String url = "jdbc:mysql://localhost:3306/dp_app_services";
+        String username = "root";
+        String password = "pass123";
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            Connection conn = DriverManager.getConnection(url, username, password);
+            System.out.println("Connection Successful");
+
+            System.out.print("Enter the Product_ID to update: ");
+            int productIdToUpdate = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Enter new Product Name: ");
+            String newName = sc.nextLine();
+
+            System.out.print("Enter new Price: ");
+            double newPrice = sc.nextDouble();
+            sc.nextLine();
+
+            System.out.print("Enter new Description: ");
+            String newDescription = sc.nextLine();
+
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE Product SET Product_Name = ?, Price = ?, Description = ? WHERE Product_ID = ?");
+            pstmt.setString(1, newName);
+            pstmt.setDouble(2, newPrice);
+            pstmt.setString(3, newDescription);
+            pstmt.setInt(4, productIdToUpdate);
+
+            int updated = pstmt.executeUpdate();
+            if (updated > 0) {
+                System.out.println("Product updated successfully.");
+            } else {
+                System.out.println("Product_ID not found.");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void delete_product() {
+        String url = "jdbc:mysql://localhost:3306/dp_app_services";
+        String username = "root";
+        String password = "pass123";
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            Connection conn = DriverManager.getConnection(url, username, password);
+            System.out.println("Connection Successful");
+
+            System.out.print("Enter the Product_ID to delete: ");
+            int productIdToDelete = sc.nextInt();
+            sc.nextLine();
+
+            PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Product WHERE Product_ID = ?");
+            pstmt.setInt(1, productIdToDelete);
+
+            int deleted = pstmt.executeUpdate();
+            if (deleted > 0) {
+                System.out.println("Product deleted successfully.");
+            } else {
+                System.out.println("Product_ID not found.");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public int function() {
         Scanner sc = new Scanner(System.in);
         System.out.println("------------------------------------------------------");
@@ -61,17 +180,39 @@ public class Product {
         sc.nextLine();
 
         if (selection == 1) {
+            while (true){
             System.out.println("Enter Product Name: ");
             Product_Name = sc.nextLine();
+            if (!Product_Name.trim().isEmpty()) {
+                break;
+            }
+            System.out.println("Error: Product name cannot be empty.");
+        }
 
+            while (true){
             System.out.println("Enter Price: ");
-            Price = sc.nextDouble();
-            sc.nextLine();
+            try {
+                Price = sc.nextDouble();
+                sc.nextLine();
+                if (Price > 0) {
+                    break;
+                }
+                System.out.println("Error: Price must be greater than 0.");
+            } catch (InputMismatchException e) {
+                System.out.println("Error: Invalid input for price. Please enter a valid number.");
+                sc.nextLine(); // Clear the invalid input
+            }
+        }
 
             System.out.println("Enter Description: ");
             Description = sc.nextLine();
-
             add_product();
+        } else if (selection == 2) {
+            view_product();
+        } else if (selection == 3) {
+            update_product();
+        } else if (selection == 4) {
+            delete_product();
         } else if (selection == 5) {
             System.out.println("Exiting Product Function selected");
             System.out.println("Function terminated");
@@ -81,6 +222,7 @@ public class Product {
         }
 
         System.out.println("Press any key to return to Product Functions");
+        sc.nextLine();
         sc.nextLine();
         return selection;
     }
