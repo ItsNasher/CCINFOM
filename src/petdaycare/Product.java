@@ -12,7 +12,7 @@ public class Product {
     public Product() {
     }
 
-    public int register_product() {
+    public int add_product() {
         String url = "jdbc:mysql://localhost:3310/db_app_services";
         String username = "root";
         String password = "ethan";
@@ -51,7 +51,7 @@ public class Product {
         Scanner sc = new Scanner(System.in);
         System.out.println("------------------------------------------------------");
         System.out.println("What would you like to do with the Product Records?");
-        System.out.println("[1] - Register a new Product");
+        System.out.println("[1] - Add a Product");
         System.out.println("[2] - View a Product");
         System.out.println("[3] - Update a Product");
         System.out.println("[4] - Delete a Product");
@@ -71,7 +71,7 @@ public class Product {
             System.out.println("Enter Description: ");
             Description = sc.nextLine();
 
-            register_product();
+            add_product();
         } else if (selection == 5) {
             System.out.println("Exiting Product Function selected");
             System.out.println("Function terminated");
