@@ -52,6 +52,9 @@ public class Product {
         System.out.println("------------------------------------------------------");
         System.out.println("What would you like to do with the Product Records?");
         System.out.println("[1] - Register a new Product");
+        System.out.println("[2] - View a Product");
+        System.out.println("[3] - Update a Product");
+        System.out.println("[4] - Delete a Product");
         System.out.println("[5] - Exit");
         System.out.print("Enter number to perform: ");
         int selection = sc.nextInt();
