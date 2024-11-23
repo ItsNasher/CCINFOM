@@ -8,7 +8,7 @@ public class Driver {
         int selection = 0;
         Scanner sc = new Scanner(System.in);
 
-        while (selection != 7) {
+        while (selection != 9) {
 			System.out.println("=====================================================");
 			System.out.println("Welcome to our Pet Daycare!");
 			System.out.println ("[1] Manage Owner Records");
