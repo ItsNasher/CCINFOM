@@ -90,7 +90,7 @@ CREATE TABLE PetBoarding (
    FOREIGN KEY (Owner_ID) REFERENCES Owner(Owner_ID) ON DELETE CASCADE
 );
 
-INSERT INTO PetBoarding (Transaction_ID, Owner_ID, Start_Date, End_Date, Total_Amount)
+INSERT INTO PetBoarding (Transaction_ID, Owner_ID, Start_Date, End_Date)
 VALUES
     (4, 1004, '2024-11-20', '2024-11-23'),
     (5, 1001, '2024-11-15', '2024-11-17')
