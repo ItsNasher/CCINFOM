@@ -261,19 +261,42 @@ public class Appointment {
         }
     }
     public void petGroomingServicesReport() {
-
+        try {
+            DBConnect db = new DBConnect();
+            Statement stmt = db.conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM services_transaction WHERE Service_ID = 1001");
+            System.out.println("----------------------------------------------------------------------------------------------------------");
+            System.out.printf("%-15s %-15s %-15s %-15s %-15s\n",
+                "Service_ID", "Owner_ID", "Transaction_Date", "Quantity", "Total_Amount");
+            System.out.println("----------------------------------------------------------------------------------------------------------");
+    
+            while (rs.next()) {
+                int serviceID = rs.getInt("Service_ID");
+                int ownerID = rs.getInt("Owner_ID");
+                String transactionDate = rs.getString("Transaction_Date");
+                int quantity = rs.getInt("Quantity");
+                double totalAmount = rs.getDouble("Total_Amount");
+    
+                System.out.printf("%-15d %-15d %-15s %-15d %-15.2f\n",
+                    serviceID, ownerID, transactionDate, quantity, totalAmount);
+            }
+            System.out.println("-----------------------------------------------------------------------------------------------------------");
+            db.DBDisconnect();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
-
     public int appointmentMenu(){
         Appointment a = new Appointment();
         Scanner sc = new Scanner(System.in);
-            System.out.println("------------------------------------------------------");
-            System.out.println("Choose an option:");
-            System.out.println("[1]. Add Appointment");
-            System.out.println("[2]. View Appointment");
-            System.out.println("[3]. Alter Health Information");
-            System.out.println("[4]. Generate Billing");
-            System.out.println("[5]. Exit");
+        System.out.println("------------------------------------------------------");
+        System.out.println("Choose an option:");
+        System.out.println("[1]. Add Appointment");
+        System.out.println("[2]. View Appointment");
+        System.out.println("[3]. Alter Health Information");
+        System.out.println("[4]. Generate Billing");
+        System.out.println("[5]. Pet Grooming Services Report");
+        System.out.println("[6]. Exit");
             System.out.print("Enter number to perform: ");
             int choice = sc.nextInt();
             sc.nextLine(); // Consume newline
@@ -282,14 +305,16 @@ public class Appointment {
                 a.addAppointment();
             } else if (choice == 2) {
                 a.viewAppointments();
-            } else if (choice == 5) {
-                System.out.println("Returning...");
-                return choice;
             } else if (choice == 3) {
                 a.alterHealthInformation();
             } else if (choice == 4) {
                 a.generateBilling();
-            }else {
+            } else if (choice == 5) {
+                a.petGroomingServicesReport();
+            } else if (choice == 6) {
+                System.out.println("Returning...");
+                return choice;
+            } else {
                 System.out.println("Invalid choice. Please try again.");
             }
             System.out.println ("Press any key to return to Services Functions");
@@ -298,7 +323,7 @@ public class Appointment {
     }
     public static void main(String[] args) {
         Appointment a = new Appointment();
-        while (a.appointmentMenu() != 5){
+        while (a.appointmentMenu() != 6){
         };
     }
 }
