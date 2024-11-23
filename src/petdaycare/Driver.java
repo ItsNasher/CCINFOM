@@ -25,7 +25,7 @@ public class Driver {
 	
 			if (selection==1) {
 				Owner o = new Owner();
-				while (o.ownerMenu() != 7) {};
+				while (o.ownerMenu() != 5) {};
 			} /*else if (selection==2) {
 				enroll e = new enroll();
 				while (e.function() != 1) {}; 

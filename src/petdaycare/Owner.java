@@ -152,7 +152,42 @@ public class Owner {
     }
 
     public void removeOwner(){
-        
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            DBConnect db = new DBConnect();
+            System.out.println("Connection Successful!");
+
+            System.out.print("Enter the Owner_ID to delete: ");
+            int ownerID = sc.nextInt();
+            sc.nextLine(); 
+
+            System.out.print("Are you sure you want to delete the owner with ID " + ownerID + "? (yes/no): ");
+            String confirmation = sc.nextLine();
+
+            if (confirmation.equalsIgnoreCase("yes")) {
+                PreparedStatement pstmt = db.conn.prepareStatement("DELETE FROM Owner WHERE Owner_ID = ?");
+
+                pstmt.setInt(1, ownerID);
+
+                int rowsAffected = pstmt.executeUpdate();
+
+                pstmt.close();
+                db.DBDisconnect();
+
+                if (rowsAffected > 0) {
+                    System.out.println("Owner record with ID " + ownerID + " deleted successfully!");
+                } else {
+                    System.out.println("No record found with Owner_ID: " + ownerID);
+                }
+            } else {
+                System.out.println("Deletion canceled.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("An error occurred while deleting the owner record.");
+            System.out.println(e.getMessage());
+        }
     }
 
     public int ownerMenu() {
@@ -163,7 +198,7 @@ public class Owner {
 		System.out.println ("[2] - View Owner Records");
 		System.out.println ("[3] - Modify an Owner Record");
 		System.out.println ("[4] - Delete an Owner Record");
-		System.out.println ("[5] - Exit");
+		System.out.println ("[5] - Return to main menu");
 		System.out.print ("Enter number to perform: ");
 		int selection = sc.nextInt();
         sc.nextLine();
@@ -195,9 +230,8 @@ public class Owner {
 			viewOwner();
             removeOwner();
 		} else if (selection == 5) {
-			System.out.println("Exiting Owner Function selected");
-			System.out.println("Function terminated");
-			return selection;
+			System.out.println("Returning...");
+            return selection;
 		} else {
 			System.out.println("Selection not valid");
 		}
