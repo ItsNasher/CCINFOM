@@ -255,7 +255,7 @@ public class Pet {
             default: System.out.println("Invalid selection. Please try again.");
         }
 
-        System.out.println("Press any key to return to Pet Functions");
+        System.out.println("Returning...");
         sc.nextLine();
 
         return selection;
