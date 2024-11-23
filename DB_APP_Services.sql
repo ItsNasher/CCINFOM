@@ -72,7 +72,6 @@ CREATE TABLE Pet (
 
 CREATE TABLE Services_Transaction (
     Transaction_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Transaction_ID INT AUTO_INCREMENT PRIMARY KEY,
     Service_ID INT NOT NULL,
     Owner_ID INT NOT NULL,
     Transaction_Date DATE NOT NULL,
