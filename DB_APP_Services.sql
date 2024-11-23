@@ -135,7 +135,10 @@ VALUES
 
 CREATE TABLE Appointment_Record (
     Appointment_ID INT AUTO_INCREMENT PRIMARY KEY, -- Unique identifier for each appointment
-    Appointment_Date DATE NOT NULL,                -- Date of the appointment
+    Appointment_Date DATE NOT NULL,                  -- Date of the appointment
+    Owner_ID INT NOT NULL,                        -- Unique identifier of the owner
+    Owner_First_Name VARCHAR(20) NOT NULL,        -- First Name of the Owner of the pet
+    Owner_Last_Name VARCHAR(20) NOT NULL,         -- Last Name of the Owner of the pet
     PetID INT NOT NULL,                           -- Foreign key referencing the Pet table
     PetName VARCHAR(30),                          -- Name of the pet
     ServiceID INT NOT NULL,                       -- Foreign key referencing the Service table
@@ -143,18 +146,21 @@ CREATE TABLE Appointment_Record (
    
     -- Foreign key constraints
     CONSTRAINT FK_Pet FOREIGN KEY (PetID) REFERENCES Pet(Pet_ID),
+    CONSTRAINT FK_OwnerID FOREIGN KEY (Owner_ID) REFERENCES Owner(Owner_ID),
+    CONSTRAINT FK_Owner_First_Name FOREIGN KEY (Owner_First_Name) REFERENCES Owner(First_Name),
+    CONSTRAINT FK_Owner_Last_Name FOREIGN KEY (Owner_Last_Name) REFERENCES Owner(Last_Name),
     CONSTRAINT FK_Service FOREIGN KEY (ServiceID) REFERENCES Services(Service_ID),
     CONSTRAINT FK_Employee FOREIGN KEY (EmployeeID) REFERENCES Employees(Employee_ID)
 ) AUTO_INCREMENT = 100;
-INSERT INTO Appointment_Record (Appointment_ID, Appointment_Date, PetID, PetName, ServiceID, EmployeeID)
-VALUES
-    (NULL, '2024-11-10', 10003, 'Coco', 1002, 102),
-    (NULL, '2024-11-15', 10000, 'Cream', 1001, 101),
-    (NULL, '2024-11-15', 10000, 'Cream', 1004, 104),
-    (NULL, '2024-11-18', 10004, 'Rocky', 1001, 101),
-    (NULL, '2024-11-20', 10004, 'Rocky', 1004, 104),
-    (NULL, '2024-11-21', 10003, 'Coco', 1003, 102); 
 
+INSERT INTO Appointment_Record (Appointment_ID, Appointment_Date, Owner_ID, Owner_First_Name, Owner_Last_Name, PetID, PetName, ServiceID, EmployeeID)
+VALUES
+    (NULL, '2024-11-10', 1003, 'Bobby', 'Brown', 10003, 'Coco', 1002, 102),
+    (NULL, '2024-11-15', 1000, 'Ethan', 'Dela Cruz',10000, 'Cream', 1001, 101),
+    (NULL, '2024-11-15', 1000, 'Ethan', 'Dela Cruz', 10000, 'Cream', 1004, 104),
+    (NULL, '2024-11-18', 1004, 'Charlie', 'Green', 10004, 'Rocky', 1001, 101),
+    (NULL, '2024-11-20', 1004, 'Charlie', 'Green', 10004, 'Rocky', 1004, 104),
+    (NULL, '2024-11-21', 1003, 'Bobby', 'Brown', 10003, 'Coco', 1003, 102); 
 
 SELECT  st.Transaction_ID, st.Service_ID, o.First_Name, o.Last_Name, st.Owner_ID, st.Transaction_Date, st.Quantity, s.Price, (st.Quantity * s.Price) AS Total_Amount
 FROM Services_Transaction st
