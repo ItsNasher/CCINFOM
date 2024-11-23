@@ -147,8 +147,6 @@ CREATE TABLE Appointment_Record (
     -- Foreign key constraints
     CONSTRAINT FK_Pet FOREIGN KEY (PetID) REFERENCES Pet(Pet_ID),
     CONSTRAINT FK_OwnerID FOREIGN KEY (Owner_ID) REFERENCES Owner(Owner_ID),
-    CONSTRAINT FK_Owner_First_Name FOREIGN KEY (Owner_First_Name) REFERENCES Owner(First_Name),
-    CONSTRAINT FK_Owner_Last_Name FOREIGN KEY (Owner_Last_Name) REFERENCES Owner(Last_Name),
     CONSTRAINT FK_Service FOREIGN KEY (ServiceID) REFERENCES Services(Service_ID),
     CONSTRAINT FK_Employee FOREIGN KEY (EmployeeID) REFERENCES Employees(Employee_ID)
 ) AUTO_INCREMENT = 100;
