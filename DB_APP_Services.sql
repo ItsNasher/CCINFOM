@@ -71,7 +71,7 @@ CREATE TABLE Pet (
 
 
 CREATE TABLE Services_Transaction (
-    Transaction_ID INT PRIMARY KEY,
+    Transaction_ID INT AUTO_INCREMENT PRIMARY KEY,
     Service_ID INT NOT NULL,
     Owner_ID INT NOT NULL,
     Transaction_Date DATE NOT NULL,
@@ -79,7 +79,22 @@ CREATE TABLE Services_Transaction (
     Total_Amount DECIMAL(10, 2),
     FOREIGN KEY (Service_ID) REFERENCES Services(Service_ID),
     FOREIGN KEY (Owner_ID) REFERENCES Owner(Owner_ID)
+) AUTO_INCREMENT = 1;
+
+CREATE TABLE PetBoarding (
+   Transaction_ID INT NOT NULL,
+   Owner_ID INT NOT NULL,
+   Start_Date DATE NOT NULL,
+   End_Date DATE NOT NULL,
+   PRIMARY KEY (Transaction_ID, Owner_ID),
+   FOREIGN KEY (Owner_ID) REFERENCES Owner(Owner_ID) ON DELETE CASCADE
 );
+
+INSERT INTO PetBoarding (Transaction_ID, Owner_ID, Start_Date, End_Date, Total_Amount)
+VALUES
+    (4, 1004, '2024-11-20', '2024-11-23'),
+    (5, 1001, '2024-11-15', '2024-11-17')
+
 
 INSERT INTO Services (Service_ID, Service_Name, Price)
 VALUES 
@@ -107,12 +122,12 @@ VALUES
     
 INSERT INTO Services_Transaction (Transaction_ID, Service_ID, Owner_ID, Transaction_Date, Quantity)
 VALUES
-    (1, 1001, 1001, '2024-11-15', 1),  -- Grooming for christopher’s dog
-    (2, 1002, 1003, '2024-11-10', 1),  -- Checkup for djermeyns dog
-    (3, 1003, 1003, '2024-11-21', 1),  -- Vaccinations for djermeyns dog
-    (4, 1004, 1004, '2024-11-20', 3),  -- Boarding for bobbys cat
-    (5, 1004, 1001, '2024-11-15', 2),  -- Boarding for ethans dog
-    (6, 1001, 1004, '2024-11-18', 1);  -- Grooming for bobbys cat
+    (NULL, 1001, 1001, '2024-11-15', 1),  -- Grooming for christopher’s dog
+    (NULL, 1002, 1003, '2024-11-10', 1),  -- Checkup for djermeyns dog
+    (NULL, 1003, 1003, '2024-11-21', 1),  -- Vaccinations for djermeyns dog
+    (NULL, 1004, 1004, '2024-11-20', 3),  -- Boarding for bobbys cat
+    (NULL, 1004, 1001, '2024-11-15', 2),  -- Boarding for ethans dog
+    (NULL, 1001, 1004, '2024-11-18', 1);  -- Grooming for bobbys cat
 
 CREATE TABLE Employees (
 Employee_ID INT PRIMARY KEY,                -- Unique identifier for each employee
