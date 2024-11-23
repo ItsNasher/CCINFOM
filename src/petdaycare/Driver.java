@@ -17,7 +17,7 @@ public class Driver {
 			System.out.println ("[4] Manage Product Records");
 			System.out.println ("[5] Manage Inventory Records");
 			System.out.println ("[6] Manage Sale Transaction Records");
-			System.out.println ("[7] Mangae Services Transaction Records");
+			System.out.println ("[7] Manage Services Transaction Records");
 			System.out.println ("[8] Quit Application");
 			System.out.println("=====================================================");
 			System.out.print ("Enter function to perform: ");
