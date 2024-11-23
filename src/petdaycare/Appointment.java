@@ -99,11 +99,14 @@ public class Appointment {
     public static void main(String[] args) {
         Appointment a = new Appointment();
         Scanner sc = new Scanner(System.in);
+
         while (true) {
+            System.out.println("------------------------------------------------------");
             System.out.println("Choose an option:");
-            System.out.println("1. Add Appointment");
-            System.out.println("2. View Appointment");
-            System.out.println("3. Exit");
+            System.out.println("[1]. Add Appointment");
+            System.out.println("[2]. View Appointment");
+            System.out.println("[3]. Exit");
+            System.out.print("Enter number to perform: ");
             int choice = sc.nextInt();
             sc.nextLine(); // Consume newline
 
