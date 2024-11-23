@@ -237,12 +237,13 @@ public class Appointment {
             PreparedStatement pstmt = db.conn.prepareStatement(sql);
             pstmt.setInt(1, appointmentID);
             ResultSet rs = pstmt.executeQuery();
-    
-            int serviceID = 0;
-            if (rs.next()) {
-                serviceID = rs.getInt("ServiceID");
+
+            if (!rs.next()) {
+                throw new Exception("Appointment ID not found.");
             }
-    
+
+            int serviceID = rs.getInt("ServiceID");
+            
             double totalBill = 0.0;
             if (serviceID == 1001) {
                 totalBill = 500.00;
