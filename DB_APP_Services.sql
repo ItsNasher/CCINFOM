@@ -48,8 +48,6 @@ VALUES (NULL, 1000, 1, '2024-11-06', 300.00),
 CREATE TABLE Services (
     Service_ID INT AUTO_INCREMENT PRIMARY KEY,
     Service_Name VARCHAR(50) NOT NULL,
-    Start_Date DATE NOT NULL,
-    End_Date DATE NOT NULL,
     Price DECIMAL (10, 2)
 ) AUTO_INCREMENT = 1001;
 
@@ -83,12 +81,12 @@ CREATE TABLE Services_Transaction (
     FOREIGN KEY (Owner_ID) REFERENCES Owner(Owner_ID)
 );
 
-INSERT INTO Services (Service_ID, Service_Name, Start_Date, End_Date, Price)
+INSERT INTO Services (Service_ID, Service_Name, Price)
 VALUES 
-    (NULL, 'Grooming', '2024-11-01', '2024-11-30', 500.00),
-    (NULL, 'Checkups', '2024-11-01', '2024-11-25', 350.00),
-    (NULL, 'Vaccinations', '2024-11-20', '2024-11-25', 1250.00),
-    (NULL, 'Boarding', '2024-11-01', '2024-11-30', 100.00);
+    (NULL, 'Grooming', 500.00),
+    (NULL, 'Checkups', 350.00),
+    (NULL, 'Vaccinations', 1250.00),
+    (NULL, 'Boarding', 100.00);
     
 INSERT INTO Owner (Owner_ID, First_Name, Last_Name, Contact_Info, City)
 VALUES
