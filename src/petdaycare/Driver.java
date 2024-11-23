@@ -8,7 +8,7 @@ public class Driver {
         int selection = 0;
         Scanner sc = new Scanner(System.in);
 
-        while (selection != 7) {
+        while (selection != 9) {
 			System.out.println("=====================================================");
 			System.out.println("Welcome to our Pet Daycare!");
 			System.out.println ("[1] Manage Owner Records");
@@ -17,7 +17,8 @@ public class Driver {
 			System.out.println ("[4] Manage Product Records");
 			System.out.println ("[5] Manage Inventory Records");
 			System.out.println ("[6] Manage Sale Transaction Records");
-			System.out.println ("[7] Quit Application");
+			System.out.println ("[7] Manage Services Transaction Records");
+			System.out.println ("[8] Quit Application");
 			System.out.println("=====================================================");
 			System.out.print ("Enter function to perform: ");
 			selection = sc.nextInt();
@@ -28,8 +29,7 @@ public class Driver {
 				while (o.ownerMenu() != 5) {};
 			} /*else if (selection==2) {
 				enroll e = new enroll();
-				while (e.function() != 1) {}; 
-    			}*/
+				while (e.function() != 1) {}; */
 			else if (selection==3) {
 				Services s = new Services();
 				while (s.serviceMenu() != 5) {}
@@ -47,6 +47,10 @@ public class Driver {
 				while (st.function() !=5) {};
 			}
 			else if (selection==7){
+				Services_Transaction set = new Services_Transaction();
+				while (set.stMenu() !=5) {};
+			}
+			else if (selection==8){
 				System.out.println("Thank you for visiting our Pet Daycare!");
 			}
 		}
