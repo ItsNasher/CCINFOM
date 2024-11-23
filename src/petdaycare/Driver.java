@@ -27,9 +27,11 @@ public class Driver {
 			if (selection==1) {
 				Owner o = new Owner();
 				while (o.ownerMenu() != 5) {};
-			} /*else if (selection==2) {
-				enroll e = new enroll();
-				while (e.function() != 1) {}; */
+			} 
+			else if (selection == 2) {
+				Pet p = new Pet();
+				while (p.petMenu() != 5) {};
+			}
 			else if (selection==3) {
 				Services s = new Services();
 				while (s.serviceMenu() != 5) {}
@@ -48,10 +50,11 @@ public class Driver {
 			}
 			else if (selection==7){
 				Services_Transaction set = new Services_Transaction();
-				while (set.stMenu() !=5) {};
+				//while (set.stMenu() !=5) {};
 			}
 			else if (selection==8){
 				System.out.println("Thank you for visiting our Pet Daycare!");
+				break;
 			}
 		}
     }
