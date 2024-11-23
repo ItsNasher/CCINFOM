@@ -1,13 +1,9 @@
 package petdaycare;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class PetBoarding {
@@ -222,17 +218,21 @@ public class PetBoarding {
             try {
                 DBConnect db = new DBConnect();
                 PreparedStatement pstmt = db.conn.prepareStatement(
-                    "SELECT DATE(Start_Date) + INTERVAL seq DAY AS Report_Date, " +
-                    "COUNT(DISTINCT Transaction_ID) AS Number_of_Pets " +
-                    "FROM PetBoarding " +
-                    "JOIN (SELECT 0 AS seq UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 " +
-                    "UNION ALL SELECT 5 UNION ALL SELECT 6) seq_table " +
-                    "ON DATE(Start_Date) + INTERVAL seq_table.seq DAY BETWEEN Start_Date AND End_Date " +
-                    "WHERE Start_Date <= End_Date " +
-                    "AND DATE(Start_Date) BETWEEN ? AND ? " +
+                    "SELECT Report_Date, COUNT(DISTINCT Transaction_ID) AS Number_of_Pets " +
+                    "FROM ( " +
+                    "    SELECT DATE(Start_Date + INTERVAL seq DAY) AS Report_Date, Transaction_ID " +
+                    "    FROM PetBoarding " +
+                    "    JOIN ( " +
+                    "        SELECT 0 AS seq UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL " +
+                    "        SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 " +
+                    "    ) seq_table " +
+                    "    ON Start_Date + INTERVAL seq DAY <= End_Date " +
+                    "    WHERE Start_Date + INTERVAL seq DAY BETWEEN ? AND ? " +
+                    ") ReportDates " +
                     "GROUP BY Report_Date " +
-                    "ORDER BY Report_Date;");
-        
+                    "ORDER BY Report_Date;"
+                );
+
                 pstmt.setString(1, startDate);  // Set the start date
                 pstmt.setString(2, endDate);    // Set the end date
         
