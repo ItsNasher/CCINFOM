@@ -194,7 +194,7 @@ public class Appointment {
             System.out.println(e.getMessage());
         }
     }
-    public void alterHealthInformation() {
+        public void alterHealthInformation() {
         try {
             DBConnect db = new DBConnect();
             System.out.println("Connection Successful");
@@ -207,7 +207,7 @@ public class Appointment {
             System.out.print("Enter New Health Information: ");
             String newHealthInfo = sc.nextLine();
     
-            String sql = "UPDATE pet SET HealthInformation = ? WHERE PetID = ?";
+            String sql = "UPDATE pet SET HealthInformation = ? WHERE Pet_ID = ?";
             PreparedStatement pstmt = db.conn.prepareStatement(sql);
             pstmt.setString(1, newHealthInfo);
             pstmt.setInt(2, petID);
@@ -222,6 +222,7 @@ public class Appointment {
             System.out.println(e.getMessage());
         }
     }
+    
     public void generateBilling() {
         try {
             DBConnect db = new DBConnect();
