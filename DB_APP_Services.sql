@@ -93,7 +93,7 @@ CREATE TABLE PetBoarding (
 INSERT INTO PetBoarding (Transaction_ID, Owner_ID, Start_Date, End_Date)
 VALUES
     (4, 1004, '2024-11-20', '2024-11-23'),
-    (5, 1001, '2024-11-15', '2024-11-17')
+    (5, 1001, '2024-11-15', '2024-11-17');
 
 
 INSERT INTO Services (Service_ID, Service_Name, Price)
