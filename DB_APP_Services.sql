@@ -107,12 +107,12 @@ VALUES
     
 INSERT INTO Services_Transaction (Transaction_ID, Service_ID, Owner_ID, Transaction_Date, Quantity, Total_Amount)
 VALUES
-    (NULL, 1001, 1001, '2024-11-15', 1, 500),  -- Grooming for christopher’s dog
-    (NULL, 1002, 1003, '2024-11-10', 1, 350),  -- Checkup for djermeyns dog
-    (NULL, 1003, 1003, '2024-11-21', 1, 1250),  -- Vaccinations for djermeyns dog
-    (NULL, 1004, 1004, '2024-11-20', 3, 300),  -- Boarding for bobbys cat
-    (NULL, 1004, 1001, '2024-11-15', 2, 200),  -- Boarding for ethans dog
-    (NULL, 1001, 1004, '2024-11-18', 1, 500);  -- Grooming for bobbys cat
+    (NULL, 1002, 1003, '2024-11-10', 1, 350),
+    (NULL, 1001, 1000, '2024-11-15', 1, 500),
+    (NULL, 1004, 1000, '2024-11-15', 2, 200),
+    (NULL, 1001, 1004, '2024-11-18', 1, 500),
+    (NULL, 1004, 1004, '2024-11-20', 3, 300),
+    (NULL, 1003, 1003, '2024-11-21', 1, 1250);
 
 CREATE TABLE Employees (
 Employee_ID INT PRIMARY KEY,                -- Unique identifier for each employee
