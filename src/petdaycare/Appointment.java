@@ -22,6 +22,7 @@ public class Appointment {
     public double totalBill;
 
     public void addAppointment() {
+        Scanner sc = new Scanner(System.in);
         try {
             DBConnect db = new DBConnect();
             System.out.println("Connection Successful");
@@ -59,20 +60,6 @@ public class Appointment {
             System.out.println("Services: (1001) Grooming, (1002) Checkups, (1003) Vaccinations, (1004) Boarding");
             int serviceID = sc.nextInt();
             sc.nextLine(); // Consume newline
-            
-            // Set total bill according to service ID
-            if(serviceID == 1001) {
-                totalBill = 500.00;
-            }
-            else if (serviceID == 1002) {
-                totalBill = 350.00;
-            }
-            else if (serviceID == 1003) {
-                totalBill = 1250.00;
-            }
-            else if (serviceID == 1004) {
-                totalBill = 100.00;
-            }
     
             System.out.print("Enter Employee ID to assign for the job: ");
             System.out.println("Employee:");
@@ -81,7 +68,6 @@ public class Appointment {
             System.out.println("(104) Michael Brown - Caretaker");
             int employeeID = sc.nextInt();
             sc.nextLine(); // Consume newline
-
     
             // Insert owner details into the owner table
             String ownerSql = "INSERT INTO owner (First_Name, Last_Name, Contact_Info, City) VALUES (?, ?, ?, ?)";
@@ -136,6 +122,21 @@ public class Appointment {
             if (added > 0) {
                 System.out.println("New appointment added successfully.");
             }
+    
+            // Insert service transaction details into the services_transaction table
+            String serviceTransactionSql = "INSERT INTO services_transaction (Service_ID, Owner_ID, Transaction_Date, Quantity, Total_Amount) " +
+                                           "VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement serviceTransactionPstmt = db.conn.prepareStatement(serviceTransactionSql);
+            
+            // Set the values for the prepared statement
+            serviceTransactionPstmt.setInt(1, serviceID);
+            serviceTransactionPstmt.setInt(2, ownerID);
+            serviceTransactionPstmt.setString(3, appointmentDate);
+            serviceTransactionPstmt.setInt(4, 1); // Assuming quantity is 1 for simplicity
+            serviceTransactionPstmt.setDouble(5, totalBill);
+            
+            // Execute the INSERT statement
+            serviceTransactionPstmt.executeUpdate();
     
             // Close the database connection
             db.DBDisconnect();
@@ -241,7 +242,9 @@ public class Appointment {
             System.out.println(e.getMessage());
         }
     }
-    
+    public void petGroomingServicesReport() {
+
+    }
     public static void main(String[] args) {
         Appointment a = new Appointment();
         Scanner sc = new Scanner(System.in);
