@@ -13,16 +13,12 @@ public class Product {
     }
 
     public int add_product() {
-        String url = "jdbc:mysql://localhost:3306/dp_app_services";
-        String username = "root";
-        String password = "pass123";
-
         try {
-            Connection conn = DriverManager.getConnection(url, username, password);
+            DBConnect db = new DBConnect();
             System.out.println("Connection Successful");
 
                     // Check if a product with the same name already exists
-                PreparedStatement checkStmt = conn.prepareStatement(
+                PreparedStatement checkStmt = db.conn.prepareStatement(
                     "SELECT COUNT(*) AS count FROM Product WHERE Product_Name = ?");
             checkStmt.setString(1, Product_Name);
             ResultSet rs = checkStmt.executeQuery();
@@ -44,7 +40,7 @@ public class Product {
 
             // Insert A New Product
 
-            PreparedStatement pstmt = conn.prepareStatement(
+            PreparedStatement pstmt = db.conn.prepareStatement(
                     "INSERT INTO Product (Product_Name, Price, Description) VALUES (?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
 
@@ -62,6 +58,7 @@ public class Product {
                 Product_ID = generatedKeys.getInt(1);
                 System.out.println("Generated Product_ID: " + Product_ID);
             }
+            db.DBDisconnect();
             return 1;
 
         } catch (Exception e) {
@@ -71,15 +68,11 @@ public class Product {
     }
 
     public void view_product() {
-        String url = "jdbc:mysql://localhost:3306/dp_app_services";
-        String username = "root";
-        String password = "pass123";
-
         try {
-            Connection conn = DriverManager.getConnection(url, username, password);
+            DBConnect db = new DBConnect();
             System.out.println("Connection Successful");
 
-            Statement stmt = conn.createStatement();
+            Statement stmt = db.conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM Product");
 
             System.out.println("Product Records:");
@@ -91,21 +84,20 @@ public class Product {
                 System.out.println("Description: " + rs.getString("Description"));
                 System.out.println("-------------------------------------------------");
             }
+            db.DBDisconnect();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void update_product() {
-        String url = "jdbc:mysql://localhost:3306/dp_app_services";
-        String username = "root";
-        String password = "pass123";
         Scanner sc = new Scanner(System.in);
 
         try {
-            Connection conn = DriverManager.getConnection(url, username, password);
+            DBConnect db = new DBConnect();
             System.out.println("Connection Successful");
 
+            view_product();
             System.out.print("Enter the Product_ID to update: ");
             int productIdToUpdate = sc.nextInt();
             sc.nextLine();
@@ -120,7 +112,7 @@ public class Product {
             System.out.print("Enter new Description: ");
             String newDescription = sc.nextLine();
 
-            PreparedStatement pstmt = conn.prepareStatement(
+            PreparedStatement pstmt = db.conn.prepareStatement(
                     "UPDATE Product SET Product_Name = ?, Price = ?, Description = ? WHERE Product_ID = ?");
             pstmt.setString(1, newName);
             pstmt.setDouble(2, newPrice);
@@ -133,26 +125,25 @@ public class Product {
             } else {
                 System.out.println("Product_ID not found.");
             }
+            db.DBDisconnect();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void delete_product() {
-        String url = "jdbc:mysql://localhost:3306/dp_app_services";
-        String username = "root";
-        String password = "pass123";
         Scanner sc = new Scanner(System.in);
 
         try {
-            Connection conn = DriverManager.getConnection(url, username, password);
+            DBConnect db = new DBConnect();
             System.out.println("Connection Successful");
 
+            view_product();
             System.out.print("Enter the Product_ID to delete: ");
             int productIdToDelete = sc.nextInt();
             sc.nextLine();
 
-            PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Product WHERE Product_ID = ?");
+            PreparedStatement pstmt = db.conn.prepareStatement("DELETE FROM Product WHERE Product_ID = ?");
             pstmt.setInt(1, productIdToDelete);
 
             int deleted = pstmt.executeUpdate();
@@ -161,6 +152,7 @@ public class Product {
             } else {
                 System.out.println("Product_ID not found.");
             }
+            db.DBDisconnect();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

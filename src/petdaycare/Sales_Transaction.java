@@ -10,15 +10,11 @@ public class Sales_Transaction {
     public String Sale_Date;
     public double Total_Price;
 
-    // Database connection details
-    private final String url = "jdbc:mysql://localhost:3306/dp_app_services";
-    private final String username = "root";
-    private final String password = "pass123";
-
     public void add_sales_transaction() {
         Scanner sc = new Scanner(System.in);
 
-        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+        try {
+            DBConnect db = new DBConnect();
             System.out.println("Connection Successful");
 
             // Input details for the sales transaction
@@ -36,7 +32,7 @@ public class Sales_Transaction {
             // Fetch the product price from the database
             String fetchPriceQuery = "SELECT Price FROM Product WHERE Product_ID = ?";
             double productPrice = 0;
-            try (PreparedStatement fetchPriceStmt = conn.prepareStatement(fetchPriceQuery)) {
+            try (PreparedStatement fetchPriceStmt = db.conn.prepareStatement(fetchPriceQuery)) {
                 fetchPriceStmt.setInt(1, Product_ID);
                 ResultSet rs = fetchPriceStmt.executeQuery();
                 if (rs.next()) {
@@ -52,7 +48,7 @@ public class Sales_Transaction {
 
             // Insert the transaction into the database
             String insertQuery = "INSERT INTO Sales_Transaction (Product_ID, Quantity_Sold, Sale_Date, Total_Price) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement pstmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+            try (PreparedStatement pstmt = db.conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
                 pstmt.setInt(1, Product_ID);
                 pstmt.setInt(2, Quantity_Sold);
                 pstmt.setString(3, Sale_Date);
@@ -70,7 +66,7 @@ public class Sales_Transaction {
                     System.out.println("Generated Transaction_ID: " + Transaction_ID);
                 }
             }
-
+            db.DBDisconnect();
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -78,14 +74,15 @@ public class Sales_Transaction {
 
     // Method to generate sales reports
     public void generate_report() {
-        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+        try {
+            DBConnect db = new DBConnect();
             System.out.println("Connection Successful");
 
             // Daily Sales Report
             System.out.println("\n--- Daily Sales Report ---");
             String dailyQuery = "SELECT Sale_Date, SUM(Quantity_Sold) AS Total_Quantity, SUM(Total_Price) AS Total_Revenue " +
                                 "FROM Sales_Transaction GROUP BY Sale_Date ORDER BY Sale_Date";
-            try (PreparedStatement pstmt = conn.prepareStatement(dailyQuery)) {
+            try (PreparedStatement pstmt = db.conn.prepareStatement(dailyQuery)) {
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
                     System.out.println("Date: " + rs.getDate("Sale_Date"));
@@ -100,7 +97,7 @@ public class Sales_Transaction {
             String weeklyQuery = "SELECT YEAR(Sale_Date) AS Year, WEEK(Sale_Date) AS Week, " +
                                  "SUM(Quantity_Sold) AS Total_Quantity, SUM(Total_Price) AS Total_Revenue " +
                                  "FROM Sales_Transaction GROUP BY Year, Week ORDER BY Year, Week";
-            try (PreparedStatement pstmt = conn.prepareStatement(weeklyQuery)) {
+            try (PreparedStatement pstmt = db.conn.prepareStatement(weeklyQuery)) {
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
                     System.out.println("Year: " + rs.getInt("Year") + ", Week: " + rs.getInt("Week"));
@@ -109,26 +106,22 @@ public class Sales_Transaction {
                     System.out.println("----------------------------");
                 }
             }
-
+            db.DBDisconnect();
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
 
     public void delete_sales_transaction() {
-        String url = "jdbc:mysql://localhost:3306/dp_app_services";
-        String username = "root";
-        String password = "pass123";
-
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the Transaction_ID to delete: ");
         int deleteId = sc.nextInt();
 
         try {
-            Connection conn = DriverManager.getConnection(url, username, password);
+            DBConnect db = new DBConnect();
             System.out.println("Connection Successful");
 
-            PreparedStatement pstmt = conn.prepareStatement(
+            PreparedStatement pstmt = db.conn.prepareStatement(
                 "DELETE FROM Sales_Transaction WHERE Transaction_ID = ?"
             );
             pstmt.setInt(1, deleteId);
@@ -139,6 +132,7 @@ public class Sales_Transaction {
             } else {
                 System.out.println("Transaction_ID not found.");
             }
+            db.DBDisconnect();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -146,12 +140,13 @@ public class Sales_Transaction {
 
     // Method to update inventory status after sales
     public void update_inventory_status() {
-        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+        try{
+            DBConnect db = new DBConnect();
             System.out.println("Connection Successful");
 
             // Fetch sales transactions that need to update inventory
             String transactionQuery = "SELECT Product_ID, Quantity_Sold FROM Sales_Transaction";
-            try (PreparedStatement pstmt = conn.prepareStatement(transactionQuery)) {
+            try (PreparedStatement pstmt = db.conn.prepareStatement(transactionQuery)) {
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
                     int productId = rs.getInt("Product_ID");
@@ -159,7 +154,7 @@ public class Sales_Transaction {
 
                     // Update inventory for each product
                     String updateQuery = "UPDATE Inventory SET Stock_Quantity = Stock_Quantity - ? WHERE Product_ID = ?";
-                    try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+                    try (PreparedStatement updateStmt = db.conn.prepareStatement(updateQuery)) {
                         updateStmt.setInt(1, quantitySold);
                         updateStmt.setInt(2, productId);
                         int updated = updateStmt.executeUpdate();
@@ -171,7 +166,7 @@ public class Sales_Transaction {
                     }
                 }
             }
-
+            db.DBDisconnect();
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }

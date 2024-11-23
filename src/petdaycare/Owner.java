@@ -20,14 +20,11 @@ public class Owner {
     public Owner() {}
 
     public void register_owner(){
-        String url = "jdbc:mysql://localhost:3310/db_app_services";
-        String username = "root";
-        String password = "ethan";
-        Connection conn = null;
+        
         try { // jdbc:mysql://localhost:3310/db_app_services?useTimezone=true&serverTimezone=UTC&user=root
-            conn = DriverManager.getConnection(url, username, password);
+            DBConnect db = new DBConnect();
             System.out.println("Connection Succesful");
-            PreparedStatement pstmt = conn.prepareStatement(
+            PreparedStatement pstmt = db.conn.prepareStatement(
             "INSERT INTO Owner (First_Name, Last_Name, Contact_Info, City) " +
             "VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
@@ -47,27 +44,18 @@ public class Owner {
                 Owner_ID = generatedKeys.getInt(1);
                 System.out.println("Generated Owner_ID: " + Owner_ID);
             }
+            db.DBDisconnect();
         } catch (Exception e){
             System.out.println(e.getMessage());
-        }
-        if (conn != null){
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            };
         }
     }
 
     public void viewOwner(){
-        String url = "jdbc:mysql://localhost:3310/db_app_services";
-        String username = "root";
-        String password = "ethan";
-        Connection conn = null;
-
+    
         try { // jdbc:mysql://localhost:3310/db_app_services?useTimezone=true&serverTimezone=UTC&user=root
-            conn = DriverManager.getConnection(url, username, password);            
-            Statement statement = conn.createStatement();
+            DBConnect db = new DBConnect();
+            Statement statement = db.conn.createStatement();
+            
             ResultSet resultSet =  statement.executeQuery("SELECT * FROM Owner");
 
             System.out.printf("%-10s %-15s %-15s %-15s %-15s\n",
@@ -86,30 +74,19 @@ public class Owner {
                 System.out.printf("%-10d %-15s %-15s %-15s %-15s\n",
                         id, firstName, lastName, phone, city);
             } 
+            db.DBDisconnect();
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
-        if (conn != null){
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            };
-        }
-
     }
 
     public void modifyOwner(){
         Scanner sc = new Scanner(System.in);
 		PreparedStatement pstmt;
-        String url = "jdbc:mysql://localhost:3310/db_app_services";
-        String username = "root";
-        String password = "ethan";
-		Connection conn = null;
+  
 		try {
-            
-            conn = DriverManager.getConnection(url, username, password);
-			pstmt = conn.prepareStatement("UPDATE Owner SET First_Name=?, Last_Name=?, Contact_Info=?, City=? WHERE Owner_ID=?");
+            DBConnect db = new DBConnect();
+			pstmt = db.conn.prepareStatement("UPDATE Owner SET First_Name=?, Last_Name=?, Contact_Info=?, City=? WHERE Owner_ID=?");
 			
 			pstmt.setString(1, Owner_FirstName);
 			pstmt.setString(2, Owner_LastName);
@@ -119,18 +96,12 @@ public class Owner {
 			
 			pstmt.executeUpdate();
 			pstmt.close();
+            db.DBDisconnect();
 			System.out.println("Student record updated in the Database");			
 		} catch (Exception e) {
 	        System.out.println("Error occured while updating a Student Record");
 	        System.out.println(e.getMessage());	
 		}
-        if (conn != null){
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            };
-        }
     }
 
     public void removeOwner(){
@@ -151,7 +122,7 @@ public class Owner {
         sc.nextLine();
 		
 		if (selection == 1) {
-			System.out.println("Creating new record of a Student");
+			System.out.println("Creating new record of an Owner");
             System.out.print("Enter First Name: ");
             Owner_FirstName = sc.nextLine();
 
@@ -171,7 +142,7 @@ public class Owner {
 		}  else if (selection == 3) {
             
             viewOwner();
-			System.out.print("Enter student ID to update :");
+			System.out.print("Enter owner ID to update :");
 			Owner_ID = sc.nextInt();
 			sc.nextLine();
 
@@ -243,14 +214,14 @@ public class Owner {
 				deleteStudent();
 			}
 		} */else if (selection == 5) {
-			System.out.println("Exiting Student Function selected");
+			System.out.println("Exiting Owner Function selected");
 			System.out.println("Function terminated");
 			return selection;
 		} else {
 			System.out.println("Selection not valid");
 		}
 		
-		System.out.println ("Press any key to return to Student Functions");
+		System.out.println ("Press any key to return to Owner Functions");
 		sc.nextLine();
 		sc.nextLine();
 		
