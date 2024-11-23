@@ -87,7 +87,7 @@ public class Inventory {
             DBConnect db = new DBConnect();
             System.out.println("Connection Successful");
 
-            Statement stmt = conn.createStatement();
+            Statement stmt = db.conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM Inventory");
     
             System.out.println("Inventory Records:");

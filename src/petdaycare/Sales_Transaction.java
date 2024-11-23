@@ -146,7 +146,7 @@ public class Sales_Transaction {
 
             // Fetch sales transactions that haven't been updated in inventory
             String transactionQuery = "SELECT Transaction_ID, Product_ID, Quantity_Sold FROM Sales_Transaction WHERE isUpdated = FALSE";
-            try (PreparedStatement pstmt = conn.prepareStatement(transactionQuery)) {
+            try (PreparedStatement pstmt = db.conn.prepareStatement(transactionQuery)) {
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
                     int transactionId = rs.getInt("Transaction_ID");
@@ -155,7 +155,7 @@ public class Sales_Transaction {
     
                     // Update inventory for each product
                     String updateQuery = "UPDATE Inventory SET Stock_Quantity = Stock_Quantity - ? WHERE Product_ID = ?";
-                    try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+                    try (PreparedStatement updateStmt = db.conn.prepareStatement(updateQuery)) {
                         updateStmt.setInt(1, quantitySold);
                         updateStmt.setInt(2, productId);
                         int updated = updateStmt.executeUpdate();
@@ -164,7 +164,7 @@ public class Sales_Transaction {
     
                             // Mark the transaction as updated
                             String markUpdatedQuery = "UPDATE Sales_Transaction SET isUpdated = TRUE WHERE Transaction_ID = ?";
-                            try (PreparedStatement markStmt = conn.prepareStatement(markUpdatedQuery)) {
+                            try (PreparedStatement markStmt = db.conn.prepareStatement(markUpdatedQuery)) {
                                 markStmt.setInt(1, transactionId);
                                 markStmt.executeUpdate();
                                 System.out.println("Transaction_ID: " + transactionId + " marked as updated.");
