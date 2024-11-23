@@ -198,7 +198,7 @@ public class Owner {
 		System.out.println ("[2] - View Owner Records");
 		System.out.println ("[3] - Modify an Owner Record");
 		System.out.println ("[4] - Delete an Owner Record");
-		System.out.println ("[5] - Return to main menu");
+		System.out.println ("[5] - Exit");
 		System.out.print ("Enter number to perform: ");
 		int selection = sc.nextInt();
         sc.nextLine();
