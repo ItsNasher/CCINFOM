@@ -22,6 +22,8 @@ CREATE TABLE Sales_Transaction (
     FOREIGN KEY (Product_ID) REFERENCES Product(Product_ID)
 ) AUTO_INCREMENT = 1000;
 
+ALTER TABLE Sales_Transaction ADD IsUpdated BOOLEAN DEFAULT FALSE;
+
 INSERT INTO Product (Product_ID, Product_Name, Price, Description)
 VALUES (NULL, "Dog Food", 300.00, "A nutritious dog food made with real chicken, wholesome grains, and essential vitamins to support your pet’s health and vitality."),
 	   (NULL, "Cat Food", 200.00, "Balanced cat food with real fish and essential nutrients for a healthy coat and strong immune system."),

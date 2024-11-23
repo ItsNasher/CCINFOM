@@ -23,7 +23,6 @@ public class Owner {
         
         try { // jdbc:mysql://localhost:3310/db_app_services?useTimezone=true&serverTimezone=UTC&user=root
             DBConnect db = new DBConnect();
-            System.out.println("Connection Succesful");
             PreparedStatement pstmt = db.conn.prepareStatement(
             "INSERT INTO Owner (First_Name, Last_Name, Contact_Info, City) " +
             "VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -82,30 +81,113 @@ public class Owner {
 
     public void modifyOwner(){
         Scanner sc = new Scanner(System.in);
-		PreparedStatement pstmt;
-  
-		try {
+        PreparedStatement pstmt;
+
+        try {
             DBConnect db = new DBConnect();
-			pstmt = db.conn.prepareStatement("UPDATE Owner SET First_Name=?, Last_Name=?, Contact_Info=?, City=? WHERE Owner_ID=?");
-			
-			pstmt.setString(1, Owner_FirstName);
-			pstmt.setString(2, Owner_LastName);
-			pstmt.setString(3, Contact_Info);
-            pstmt.setString(4, City);
-            pstmt.setInt(5, Owner_ID);
-			
-			pstmt.executeUpdate();
-			pstmt.close();
+            System.out.println("Connection Successful!");
+
+            System.out.print("Enter the Owner_ID to update: ");
+            int ownerID = sc.nextInt();
+            sc.nextLine(); 
+
+            String currentFirstName = "", currentLastName = "", currentContactInfo = "", currentCity = "";
+            PreparedStatement selectStmt = db.conn.prepareStatement(
+                    "SELECT First_Name, Last_Name, Contact_Info, City FROM Owner WHERE Owner_ID = ?");
+            selectStmt.setInt(1, ownerID);
+            ResultSet rs = selectStmt.executeQuery();
+            if (rs.next()) {
+                currentFirstName = rs.getString("First_Name");
+                currentLastName = rs.getString("Last_Name");
+                currentContactInfo = rs.getString("Contact_Info");
+                currentCity = rs.getString("City");
+            } else {
+                System.out.println("No record found with Owner_ID: " + ownerID);
+                db.DBDisconnect();
+                return; 
+            }
+            rs.close();
+            selectStmt.close();
+
+            System.out.println("\nEnter new values or 1 to keep the current value:");
+
+            System.out.print("First Name [" + currentFirstName + "]: ");
+            String firstName = sc.nextLine();
+            if (firstName.equals("1")) firstName = currentFirstName;
+
+            System.out.print("Last Name [" + currentLastName + "]: ");
+            String lastName = sc.nextLine();
+            if (lastName.equals("1")) lastName = currentLastName;
+
+            System.out.print("Contact Info [" + currentContactInfo + "]: ");
+            String contactInfo = sc.nextLine();
+            if (contactInfo.equals("1")) contactInfo = currentContactInfo;
+
+            System.out.print("City [" + currentCity + "]: ");
+            String city = sc.nextLine();
+            if (city.equals("1")) city = currentCity;
+
+            pstmt = db.conn.prepareStatement(
+                    "UPDATE Owner SET First_Name = ?, Last_Name = ?, Contact_Info = ?, City = ? WHERE Owner_ID = ?");
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, contactInfo);
+            pstmt.setString(4, city);
+            pstmt.setInt(5, ownerID);
+
+            int rowsAffected = pstmt.executeUpdate();
+            pstmt.close();
             db.DBDisconnect();
-			System.out.println("Student record updated in the Database");			
-		} catch (Exception e) {
-	        System.out.println("Error occured while updating a Student Record");
-	        System.out.println(e.getMessage());	
-		}
+
+            if (rowsAffected > 0) {
+                System.out.println("Owner record updated successfully!");
+            } else {
+                System.out.println("No record found with Owner_ID: " + ownerID);
+            }
+
+        } catch (Exception e) {
+            System.out.println("An error occurred while updating the owner record.");
+            System.out.println(e.getMessage());
+        }
     }
 
     public void removeOwner(){
+        Scanner sc = new Scanner(System.in);
 
+        try {
+            DBConnect db = new DBConnect();
+            System.out.println("Connection Successful!");
+
+            System.out.print("Enter the Owner_ID to delete: ");
+            int ownerID = sc.nextInt();
+            sc.nextLine(); 
+
+            System.out.print("Are you sure you want to delete the owner with ID " + ownerID + "? (yes/no): ");
+            String confirmation = sc.nextLine();
+
+            if (confirmation.equalsIgnoreCase("yes")) {
+                PreparedStatement pstmt = db.conn.prepareStatement("DELETE FROM Owner WHERE Owner_ID = ?");
+
+                pstmt.setInt(1, ownerID);
+
+                int rowsAffected = pstmt.executeUpdate();
+
+                pstmt.close();
+                db.DBDisconnect();
+
+                if (rowsAffected > 0) {
+                    System.out.println("Owner record with ID " + ownerID + " deleted successfully!");
+                } else {
+                    System.out.println("No record found with Owner_ID: " + ownerID);
+                }
+            } else {
+                System.out.println("Deletion canceled.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("An error occurred while deleting the owner record.");
+            System.out.println(e.getMessage());
+        }
     }
 
     public int ownerMenu() {
@@ -113,10 +195,10 @@ public class Owner {
 		System.out.println ("------------------------------------------------------");
 		System.out.println ("What would you like to do with the Owner Records?");
 		System.out.println ("[1] - Register a new Owner Record");
-		System.out.println ("[2] - View an Owner Record");
+		System.out.println ("[2] - View Owner Records");
 		System.out.println ("[3] - Modify an Owner Record");
 		System.out.println ("[4] - Delete an Owner Record");
-		System.out.println ("[5] - Exit");
+		System.out.println ("[5] - Return to main menu");
 		System.out.print ("Enter number to perform: ");
 		int selection = sc.nextInt();
         sc.nextLine();
@@ -139,90 +221,22 @@ public class Owner {
 		}  
         else if (selection == 2) {
 			viewOwner();		
-		}  else if (selection == 3) {
-            
+		}  
+        else if (selection == 3) {
             viewOwner();
-			System.out.print("Enter owner ID to update :");
-			Owner_ID = sc.nextInt();
-			sc.nextLine();
-
-            String url = "jdbc:mysql://localhost:3310/db_app_services";
-            String username = "root";
-            String password = "ethan";
-
-            String newLastname  = null;
-            String newFirstname = null;
-            String newContactInfo = null;
-            String newCity = null;
-            try {
-                Connection conn = DriverManager.getConnection(url, username, password);
-                
-                // Check if the ID exists
-                PreparedStatement checkStmt = conn.prepareStatement("SELECT * FROM Owner WHERE Owner_ID = ?");
-                checkStmt.setInt(1, Owner_ID);
-                ResultSet resultSet = checkStmt.executeQuery();
-                
-                if (!resultSet.next()) {
-                    System.out.println("No record found with Owner ID: " + Owner_ID);
-                } else {
-                    System.out.print("Enter updated Last Name (Enter if no changes): ");
-                    newLastname = sc.nextLine();
-                    System.out.print("Enter updated First Name (Enter if no changes): ");
-                    newFirstname = sc.nextLine();
-                    System.out.print("Enter updated Contact Info (Enter if no changes): ");
-                    newContactInfo = sc.nextLine();
-                    System.out.print("Enter updated City (Enter if no changes): ");
-                    newCity = sc.nextLine();
-
-                    if (newLastname != null && !newLastname.isEmpty()){
-                        Owner_LastName = newLastname;
-                    }
-
-                    if (newFirstname != null && !newFirstname.isEmpty()){
-                        Owner_FirstName = newFirstname;
-                    }
-
-                    if (newContactInfo != null && !newContactInfo.isEmpty()){
-                        Contact_Info = newContactInfo;
-                    } 
-                    if (newCity != null && !newCity.isEmpty()){
-                        City = newCity;
-                    }
-
-                    modifyOwner();
-                }
-            } catch (Exception e){
-                System.out.println(e.getMessage());
-            }   
+            modifyOwner();
         }
-         
-            /*else if (selection == 4) {
-			// Mechanics for Deleting a Record
-			// 1. Ask for the identifier of the record
-			// 2. Retrieve the old data of the record
-			// 3. Call the delete function
-			 			
-			
-			System.out.println("Enter student ID to delete :");
-			studentid = sc.nextInt();
-			sc.nextLine();
-			viewStudent();
-			
-			if (norecord) {
-				System.out.println("No record to delete.");
-			} else {
-				deleteStudent();
-			}
-		} */else if (selection == 5) {
-			System.out.println("Exiting Owner Function selected");
-			System.out.println("Function terminated");
-			return selection;
+        else if (selection == 4) {
+			viewOwner();
+            removeOwner();
+		} else if (selection == 5) {
+			System.out.println("Returning...");
+            return selection;
 		} else {
 			System.out.println("Selection not valid");
 		}
 		
 		System.out.println ("Press any key to return to Owner Functions");
-		sc.nextLine();
 		sc.nextLine();
 		
 		return selection;

@@ -13,7 +13,7 @@ public class Driver {
 			System.out.println("Welcome to our Pet Daycare!");
 			System.out.println ("[1] Manage Owner Records");
             System.out.println ("[2] Manage Pet Records");
-			System.out.println ("[3] Enroll Student in a Course");
+			System.out.println ("[3] Manage Service Records");
 			System.out.println ("[4] Manage Product Records");
 			System.out.println ("[5] Manage Inventory Records");
 			System.out.println ("[6] Manage Sale Transaction Records");
@@ -25,7 +25,7 @@ public class Driver {
 	
 			if (selection==1) {
 				Owner o = new Owner();
-				while (o.ownerMenu() != 7) {};
+				while (o.ownerMenu() != 5) {};
 			} /*else if (selection==2) {
 				enroll e = new enroll();
 				while (e.function() != 1) {}; 
