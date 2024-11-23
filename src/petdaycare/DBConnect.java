@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 public class DBConnect {
 
 	public Connection conn;
-	String url = "jdbc:mysql://localhost:3310/db_app_services";
+	String url = "jdbc:mysql://localhost:3306/db_app_services";
     String username = "root";
-    String password = "ethan";
+    String password = "K!@n2004";
 	
 	public DBConnect() {
 		try {
@@ -31,6 +31,7 @@ public class DBConnect {
 	
 	public static void main(String[] args) {
 		DBConnect db = new DBConnect();
+
 	}
 
 }
