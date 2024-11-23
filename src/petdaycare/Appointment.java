@@ -60,14 +60,34 @@ public class Appointment {
             System.out.println("Services: (1001) Grooming, (1002) Checkups, (1003) Vaccinations, (1004) Boarding");
             int serviceID = sc.nextInt();
             sc.nextLine(); // Consume newline
-    
-            System.out.print("Enter Employee ID to assign for the job: ");
-            System.out.println("Employee:");
-            System.out.println("(101) John Doe - Groomer");
-            System.out.println("(102) Jane Smith - Veterinarian");
-            System.out.println("(104) Michael Brown - Caretaker");
-            int employeeID = sc.nextInt();
-            sc.nextLine(); // Consume newline
+
+            System.out.print("Enter Quantity: ");
+            int quantity = sc.nextInt();
+            sc.nextLine(); 
+            
+            int employeeID = 0;
+            double servicePrice = 0.0;
+            switch (serviceID) {
+                case 1001:
+                    employeeID = 101;
+                    servicePrice = 500.00;
+                    break;
+                case 1002:
+                    employeeID = 102;
+                    servicePrice = 350.00;
+                case 1003:
+                    employeeID = 102;
+                    servicePrice = 1250.00;
+                    break;
+                case 1004:
+                    employeeID = 104;
+                    servicePrice = 100.00;
+                    break;
+                default:
+                    System.out.println("Invalid Service ID.");
+                    return;
+            }
+            double totalBill = servicePrice * quantity;
     
             // Insert owner details into the owner table
             String ownerSql = "INSERT INTO owner (First_Name, Last_Name, Contact_Info, City) VALUES (?, ?, ?, ?)";
@@ -125,25 +145,23 @@ public class Appointment {
     
             // Insert service transaction details into the services_transaction table
             String serviceTransactionSql = "INSERT INTO services_transaction (Service_ID, Owner_ID, Transaction_Date, Quantity, Total_Amount) " +
-                                           "VALUES (?, ?, ?, ?, ?)";
+            "VALUES (?, ?, ?, ?, ?)";
             PreparedStatement serviceTransactionPstmt = db.conn.prepareStatement(serviceTransactionSql);
-            
+
             // Set the values for the prepared statement
             serviceTransactionPstmt.setInt(1, serviceID);
             serviceTransactionPstmt.setInt(2, ownerID);
             serviceTransactionPstmt.setString(3, appointmentDate);
-            serviceTransactionPstmt.setInt(4, 1); // Assuming quantity is 1 for simplicity
+            serviceTransactionPstmt.setInt(4, quantity);
             serviceTransactionPstmt.setDouble(5, totalBill);
-            
-            // Execute the INSERT statement
+
+            // Execute the INSERT statement for services transaction
             serviceTransactionPstmt.executeUpdate();
-    
+
             // Close the database connection
             db.DBDisconnect();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        } finally {
-            sc.close();
         }
     }
     public void viewAppointments() {
@@ -245,11 +263,10 @@ public class Appointment {
     public void petGroomingServicesReport() {
 
     }
-    public static void main(String[] args) {
+
+    public int appointmentMenu(){
         Appointment a = new Appointment();
         Scanner sc = new Scanner(System.in);
-
-        while (true) {
             System.out.println("------------------------------------------------------");
             System.out.println("Choose an option:");
             System.out.println("[1]. Add Appointment");
@@ -266,7 +283,8 @@ public class Appointment {
             } else if (choice == 2) {
                 a.viewAppointments();
             } else if (choice == 5) {
-                break;
+                System.out.println("Returning...");
+                return choice;
             } else if (choice == 3) {
                 a.alterHealthInformation();
             } else if (choice == 4) {
@@ -274,7 +292,13 @@ public class Appointment {
             }else {
                 System.out.println("Invalid choice. Please try again.");
             }
-        }
-        sc.close();
+            System.out.println ("Press any key to return to Services Functions");
+            sc.nextLine();
+            return choice;
+    }
+    public static void main(String[] args) {
+        Appointment a = new Appointment();
+        while (a.appointmentMenu() != 5){
+        };
     }
 }
