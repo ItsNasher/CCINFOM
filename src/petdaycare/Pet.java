@@ -189,7 +189,6 @@ public class Pet {
                 } else {
                     System.out.println("Error: Owner with ID " + Owner_ID + " does not exist. Pet cannot be registered.");
                 }
-                registerPet();
                 break;
             }
 
