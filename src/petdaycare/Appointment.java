@@ -153,7 +153,7 @@ public class Appointment {
     
             System.out.printf("%-15s %-20s %-15s %-15s %-15s %-15s %-15s %-15s\n",
                 "Appointment_ID", "Appointment_Date", "Owner_ID", "Owner_First_Name", "Owner_Last_Name", "PetID", "PetName", "ServiceID", "EmployeeID");
-            System.out.println("-------------------------------------------------------------------------------------------------------------");
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------");
     
             while (rs.next()) {
                 int appointmentID = rs.getInt("Appointment_ID");
@@ -169,7 +169,7 @@ public class Appointment {
                 System.out.printf("%-15d %-20s %-15d %-15s %-15s %-15d %-15s %-15d %-15d\n",
                     appointmentID, appointmentDate, ownerID, ownerFirstName, ownerLastName, petID, petName, serviceID, employeeID);
             }
-    
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------");
             db.DBDisconnect();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -203,6 +203,45 @@ public class Appointment {
             System.out.println(e.getMessage());
         }
     }
+    public void generateBilling() {
+        try {
+            DBConnect db = new DBConnect();
+            System.out.println("Connection Successful");
+            viewAppointments();
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Enter Appointment ID: ");
+            int appointmentID = sc.nextInt();
+            sc.nextLine(); // Consume newline
+    
+            String sql = "SELECT ServiceID FROM appointment_record WHERE Appointment_ID = ?";
+            PreparedStatement pstmt = db.conn.prepareStatement(sql);
+            pstmt.setInt(1, appointmentID);
+            ResultSet rs = pstmt.executeQuery();
+    
+            int serviceID = 0;
+            if (rs.next()) {
+                serviceID = rs.getInt("ServiceID");
+            }
+    
+            double totalBill = 0.0;
+            if (serviceID == 1001) {
+                totalBill = 500.00;
+            } else if (serviceID == 1002) {
+                totalBill = 350.00;
+            } else if (serviceID == 1003) {
+                totalBill = 1250.00;
+            } else if (serviceID == 1004) {
+                totalBill = 100.00;
+            }
+    
+            System.out.println("Total Bill: " + totalBill);
+    
+            db.DBDisconnect();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
     public static void main(String[] args) {
         Appointment a = new Appointment();
         Scanner sc = new Scanner(System.in);
@@ -212,7 +251,9 @@ public class Appointment {
             System.out.println("Choose an option:");
             System.out.println("[1]. Add Appointment");
             System.out.println("[2]. View Appointment");
-            System.out.println("[3]. Exit");
+            System.out.println("[3]. Alter Health Information");
+            System.out.println("[4]. Generate Billing");
+            System.out.println("[5]. Exit");
             System.out.print("Enter number to perform: ");
             int choice = sc.nextInt();
             sc.nextLine(); // Consume newline
@@ -221,9 +262,13 @@ public class Appointment {
                 a.addAppointment();
             } else if (choice == 2) {
                 a.viewAppointments();
-            } else if (choice == 3) {
+            } else if (choice == 5) {
                 break;
-            } else {
+            } else if (choice == 3) {
+                a.alterHealthInformation();
+            } else if (choice == 4) {
+                a.generateBilling();
+            }else {
                 System.out.println("Invalid choice. Please try again.");
             }
         }
