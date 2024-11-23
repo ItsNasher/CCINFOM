@@ -90,12 +90,6 @@ CREATE TABLE PetBoarding (
    FOREIGN KEY (Owner_ID) REFERENCES Owner(Owner_ID) ON DELETE CASCADE
 );
 
-INSERT INTO PetBoarding (Transaction_ID, Owner_ID, Start_Date, End_Date)
-VALUES
-    (4, 1004, '2024-11-20', '2024-11-23'),
-    (5, 1001, '2024-11-15', '2024-11-17');
-
-
 INSERT INTO Services (Service_ID, Service_Name, Price)
 VALUES 
     (NULL, 'Grooming', 500.00),
@@ -128,6 +122,11 @@ VALUES
     (NULL, 1004, 1004, '2024-11-20', 3),  -- Boarding for bobbys cat
     (NULL, 1004, 1001, '2024-11-15', 2),  -- Boarding for ethans dog
     (NULL, 1001, 1004, '2024-11-18', 1);  -- Grooming for bobbys cat
+
+INSERT INTO PetBoarding (Transaction_ID, Owner_ID, Start_Date, End_Date)
+VALUES
+    (4, 1004, '2024-11-20', '2024-11-23'),
+    (5, 1001, '2024-11-15', '2024-11-17');
 
 CREATE TABLE Employees (
 Employee_ID INT PRIMARY KEY,                -- Unique identifier for each employee
