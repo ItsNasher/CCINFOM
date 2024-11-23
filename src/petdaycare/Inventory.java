@@ -87,23 +87,17 @@ public class Inventory {
             DBConnect db = new DBConnect();
             System.out.println("Connection Successful");
 
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Enter Inventory_ID to view: ");
-            int inventoryID = sc.nextInt();
-            sc.nextLine();
-
-            PreparedStatement pstmt = db.conn.prepareStatement(
-                    "SELECT * FROM Inventory WHERE Inventory_ID = ?");
-            pstmt.setInt(1, inventoryID);
-
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Inventory");
+    
+            System.out.println("Inventory Records:");
+            System.out.println("-------------------------------------------------");
+            while (rs.next()) {
                 System.out.println("Inventory_ID: " + rs.getInt("Inventory_ID"));
                 System.out.println("Product_ID: " + rs.getInt("Product_ID"));
                 System.out.println("Stock_Quantity: " + rs.getInt("Stock_Quantity"));
                 System.out.println("Supply_Date: " + rs.getString("Supply_Date"));
-            } else {
-                System.out.println("No record found with Inventory_ID: " + inventoryID);
+                System.out.println("-------------------------------------------------");
             }
             db.DBDisconnect();
         } catch (Exception e) {
