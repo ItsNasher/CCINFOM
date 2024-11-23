@@ -10,7 +10,7 @@ public class Services_Transaction {
     public int Quantity;
     public double Total_Amount;
     
-    public void makeTransaction(){
+    /*public void makeTransaction(){
         Scanner sc = new Scanner(System.in);
         Owner o = new Owner();
         Services s = new Services();
@@ -81,7 +81,7 @@ public class Services_Transaction {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    } */
 
     public void viewTransactions(){
         try {
@@ -221,32 +221,28 @@ public class Services_Transaction {
         while (true) {
             System.out.println("------------------------------------------------------");
             System.out.println("What would you like to do?");
-            System.out.println("[1] - Make a Transaction");
-            System.out.println("[2] - View Services Transactions");
-            System.out.println("[3] - Delete a Services Transaction");
-            System.out.println("[4] - Generate Veterinarian Visits Report");
-            System.out.println("[5] - Exit");
+            System.out.println("[1] - View Services Transactions");
+            System.out.println("[2] - Delete a Services Transaction");
+            System.out.println("[3] - Generate Veterinarian Visits Report");
+            System.out.println("[4] - Exit");
             System.out.print("Enter number to perform: ");
             int selection = sc.nextInt();
             sc.nextLine();
 
             if (selection == 1) {
-                makeTransaction();
+                viewTransactions();
             } 
             else if (selection == 2) {
                 viewTransactions();
-            } 
-            else if (selection == 3) {
-                viewTransactions();
                 deleteTransaction();
             } 
-            else if(selection==4){
+            else if (selection == 3) {
                 generateVeterinarian();
             } 
-            else if (selection == 5) {
+            else if(selection==4){
                 System.out.println("Returning...");
                 return selection;
-            } else {
+            }  else {
                 System.out.println("Selection not valid");
             }
     
@@ -257,7 +253,7 @@ public class Services_Transaction {
     }
     public static void main(String[] args) {
         Services_Transaction s = new Services_Transaction();
-        while (s.stMenu() != 5){
+        while (s.stMenu() != 4){
         };
     }
 
