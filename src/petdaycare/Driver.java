@@ -60,7 +60,7 @@ public class Driver {
 			}
 			else if (selection==9){
 				PetBoarding pb = new PetBoarding();
-				while (pb.boardingMenu() != 5) {};
+				while (pb.boardingMenu() != 6) {};
 			}
 			else if (selection==10){
 				System.out.println("Thank you for visiting our Pet Daycare!");

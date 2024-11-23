@@ -264,7 +264,7 @@ public class PetBoarding {
         System.out.println("[3] - Modify a Boarding Record");
         System.out.println("[4] - Delete a Boarding Record");
         System.out.println("[5] - Utilization report");
-        System.out.println("[5] - Exit");
+        System.out.println("[6] - Exit");
         System.out.print("Enter number to perfom: ");
         int selection = sc.nextInt();
         sc.nextLine();
@@ -284,7 +284,7 @@ public class PetBoarding {
                 viewBoardingRecords();
                 deleteBoardingRecord();
                 break;
-            case 5: {
+            case 5: 
                 System.out.println("Generating Utilization Report.");
                 System.out.print("Enter start date (YYYY-MM-DD): ");
                 String startDate = sc.nextLine();
@@ -294,10 +294,9 @@ public class PetBoarding {
             
                 generateUtilizationReport(startDate, endDate);
                 break;
-            }
-            case 6:
+            case 6: 
                 System.out.println("Returning to main menu...");
-                break;
+                return selection;
             default:
                 System.out.println("Invalid selection.");
                 break;
