@@ -167,6 +167,7 @@ public class Services_Transaction {
             DBConnect db = new DBConnect();
     
             System.out.println("Veterinarian Visit Report:");
+            System.out.println("\nVeterinarian: Jane Smith");
     
             // Query for daily results with owner first names
             String dailyQuery = "SELECT st.Transaction_Date, o.first_name AS Owner_Name, COUNT(*) AS Visits " +
